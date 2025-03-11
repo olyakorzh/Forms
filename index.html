@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> Форма регистрации</h1>
+
+<!-- У меня вопрос:
+как мне задать проверку имени и имейла, где именно эти регулярные выражения смотреть можно, для пароля нашла
+как сделать проверку для select и checkbox и radiobutton
+почему у меня в select placeholder не отображается (Ваша профессия)-->
+
+    <form action="", method="POST", name="registration", class="form">
+        <div>
+            <label for="name">Ваше имя</label>
+            <input type="text", id="name",class='form_elements', minlength="2", maxlength="20" placeholder="Ваше имя",pattern="", required/>
+            <p class="error", id="errorName"></p>
+        </div>
+        
+        <div>
+            <label for="email">Ваш email</label>
+            <input type="email", id="email", class='form_elements', placeholder="Ваш email", pattern="" required/>
+            <p class="error", id="errorEmail
+            "></p>
+        </div>
+
+        <div>
+            <label for="age">Ваш возраст</label>
+            <input type="text", id="age", class='form_elements', placeholder="Ваш возраст", required/>
+            <p class="error", id="errorAge"></p>
+        </div>
+
+        <div>
+            <label for="p">Ваш пол</label>
+            <input type="radio", name="p"/> Женщина
+            <input type="radio", name="p",/>Мужчина
+            <p class="error", id="errorP"></p>
+        </div>
+
+        <div>
+            <label for="select">Ваша профессия</label><br>
+            <select name="profession" id="select", placeholder="Ваша профессия", required>
+                <option value="teacher">Учитель</option>
+                <option value="programmer">Программист</option>
+                <option value="doctor">Врач</option>
+                <option value="designer">Дизайнер</option>
+                <option value="engineer">Инженер</option>
+                <option value="seller">Продавец</option>
+                <option value="other">Другое</option>
+            </select>
+            <p class="error", id="errorProfession"></p>
+        </div>
+
+        <div>
+            <label for="password">Ваш пароль</label>
+            <input type="password", id='password', class='form_elements', minlength="8" placeholder="Ваш пароль", 
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$", required/>
+            <p class="error", id="errorPassword"></p>
+        </div>
+
+        <div>
+            <input type="checkbox", id='checkbox', required/> Согласен на обработку данных
+            <p class="error", id="errorCheckbox"></p>
+        </div>
+
+        <div>
+            <button id="submit", disabled> Отправить </button>
+        </div>
+    </form>
+
+    <script>
+        let form = document.forms.registration
+
+        let inputName = document.getElementById('name');
+        let inputEmail = document.getElementById('email');
+        let inputAge = document.getElementById('age');
+        let inputP = document.forms.elements.p;
+        let select = document.getElementById('select');
+        let inputPassword = document.getElementById('psaaword');
+        let inputCheckbox = document.getElementById('checkbox');
+
+        let button = document.getElementById('submit');
+
+        let nameRegex =
+        let emailRegex = 
+        let passwordRegex = ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$;
+
+        let errorName = document.getElementById('errorName');
+        let errorEmail = document.getElementById('errorEmail');
+        let errorAge = document.getElementById('errorAge');
+        let errorP = documnet.getElementById('errorP');
+        let errorProfession = document.getElementById('errorProfession');
+        let errorCheckbox = document.getElementById('errorCheckbox');
+        let errorPassword = document.getElementById('errorPassword');
+
+        let elementsForFocus = document.querySelectorAll('.form_elements');
+
+        form.addEventListener('submit', function(evt) {
+            evt.preventDefault();
+
+            if (inputName.value === '' || nameRegex.test(inputName.value)) {
+                errorName.textContent = 'Enter your name';
+                errorName.style.display = 'block';
+            } else if (inputEmail.value === '' || emailRegex.test(inputEmail.value)) {
+                errorEmail.textContent = 'Enter your email';
+                errorEmail.style.display = 'block';
+            }  else if (inputAge.value === '') {
+                errorAge.textContent = 'Enter your age';
+                errorAge.style.display = 'block';
+            } else if (inputP.checked === false){
+                errorP.textContent = 'Choose any variant';
+                errorP.style.display = 'block';
+            } else if (select.value === ''){
+                errorProfession.textContent = 'Enter your password';
+                errorProfession.style.display = 'block';
+            } else if (inputPassword.value === '' || passwordRegex.test(inputPassword.value)) {
+                errorPassword.textContent = 'Enter the password';
+                errorPassword.style.display = 'block';
+            } else if (inputCheckbox.checked === false) {
+                errorCheckbox.textContent = 'Agree with the terms';
+                errorCheckbox.style.display = 'block';
+            } else {
+                errorName.style.display = '';
+                console.log(inputName.value);
+                errorEmail.textContent = '';
+                console.log(inputEmail.value);
+                errorAge.textContent = '';
+                console.log(inputAge);
+                errorP.textContent = '';
+                console.log(inputP.vale);
+                errorProfession.textContent = '';
+                console.log(select.value);                
+                errorPassword.textContent = '';
+                console.log(inputPassword.value);
+                errorCheckbox.textContent = '';
+                button.disabled = false;
+                form.reset();
+            }
+        });
+
+        elementsForFocus.addEventListener('focus', function(){
+            elementsForFocus.style.border = '1px solid #00ff00';
+        }) ;
+
+        elementsForFocus.addEventListener('blur', function(){
+            elementsForFocus.style.border =   '';
+        }) ;
+        
+
+        // if (inputName.value === '' || nameRegex.test(inputName.value) {
+        //         errorName.textContent = 'Enter your name';
+        //         errorName.style.display = 'block';
+        //     } else {
+        //         errorName.style.display = '';
+        // console.log(inputName.value);
+        //     }
+            
+        // if (inputEmail.value === '' || emailRegex.test(inputEmail.value)) {
+        //         errorEmail.textContent = 'Enter your email';
+        //         errorEmail.style.display = 'block';
+        //     }  else {
+        //         errorEmail.textContent = '';
+        // console.log(inputEmail.value);
+        //     }
+            
+        // if (inputAge.value === '') {
+        //         errorAge.textContent = 'Enter your age';
+        //         errorAge.style.display = 'block';
+        //     } else {
+        //         errorAge.textContent = '';
+        // console.log(inputAge);
+        //     }
+
+        // if (inputP.checked === false){
+        //         errorP.textContent = 'Choose any variant';
+        //         errorP.style.display = 'block';
+        //     } else {
+        //         errorP.textContent = '';
+        // console.log(inputP.vale);
+        //     }
+            
+        // if (select.value === ''){
+        //         errorProfession.textContent = 'Enter your password';
+        //         errorProfession.style.display = 'block';
+        //     } else {
+        //         errorProfession.textContent = '';
+        // console.log(select.value);
+                
+        //     }
+            
+        // if (inputPassword.value === '' || passwordRegex.test(inputPassword.value)) {
+        //         errorPassword.textContent = 'Enter the password';
+        //         errorPassword.style.display = 'block';
+        //     } else {
+        //         errorPassword.textContent = '';
+        //         console.log(inputPassword.value);
+                
+        //     }
+
+        // if (inputCheckbox.checked === false) {
+        //         errorCheckbox.textContent = 'Agree with the terms';
+        //         errorCheckbox.style.display = 'block';
+        //     } else {
+        //         errorCheckbox.textContent = '';
+        //     }
+        
+
+
+    </script>
+</body>
+</html>
