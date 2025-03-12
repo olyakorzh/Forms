@@ -5,26 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+
+    select:invalid { color: gray; }
+
+    .focused {
+        border: 7px solid #00ff00;
+    }
+    
+    .errorEmpty {
+        display: none;
+    }
+
+    .error{
+        display: none;
+    }
+
+</style>
 <body>
     <h1> Форма регистрации</h1>
-
-<!-- У меня вопрос:
-как мне задать проверку имени и имейла, где именно эти регулярные выражения смотреть можно, для пароля нашла
-как сделать проверку для select и checkbox и radiobutton
-почему у меня в select placeholder не отображается (Ваша профессия)-->
-
+ 
     <form action="", method="POST", name="registration", class="form">
         <div>
             <label for="name">Ваше имя</label>
-            <input type="text", id="name",class='form_elements', minlength="2", maxlength="20" placeholder="Ваше имя",pattern="", required/>
-            <p class="error", id="errorName"></p>
+            <input type="text", id="name", class='form_elements', minlength="2", maxlength="20" placeholder="Ваше имя",pattern="^[A-Za-zА-Яа-яЁё\s]+$", required/>
+            <p class="error", id="errorName"></p>;
         </div>
         
         <div>
             <label for="email">Ваш email</label>
-            <input type="email", id="email", class='form_elements', placeholder="Ваш email", pattern="" required/>
-            <p class="error", id="errorEmail
-            "></p>
+            <input type="email", id="email", class='form_elements', placeholder="Ваш email", pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", required/>
+            <p class="error", id="errorEmail"></p>;
         </div>
 
         <div>
@@ -35,14 +46,36 @@
 
         <div>
             <label for="p">Ваш пол</label>
-            <input type="radio", name="p"/> Женщина
-            <input type="radio", name="p",/>Мужчина
+        <div>
+                <label for="woman">
+                    <input type="radio", name="p"/> Женщина
+                </label>
+        </div>
+        <div>   <label for="man">
+                    <input type="radio", name="p"/>Мужчина
+                </label>
+        </div> 
+
+        </div>
+                <!-- <div class="gender-option">
+                <label>
+                    <input type="radio" name="gender" value="male" required>
+                    Мужчина
+                </label>
+            </div>
+            <div class="gender-option">
+                <label>
+                    <input type="radio" name="gender" value="female" required>
+                    Женщина
+                </label> -->
+                
             <p class="error", id="errorP"></p>
         </div>
 
         <div>
             <label for="select">Ваша профессия</label><br>
             <select name="profession" id="select", placeholder="Ваша профессия", required>
+                <option value="", disabled selected hidden>Ваша профессия</option>
                 <option value="teacher">Учитель</option>
                 <option value="programmer">Программист</option>
                 <option value="doctor">Врач</option>
@@ -67,88 +100,198 @@
         </div>
 
         <div>
-            <button id="submit", disabled> Отправить </button>
+            <!-- <button id="submit", disabled> Отправить </button> -->
+            <button id="submit"> Отправить </button>
         </div>
+
+        <p class="errorEmpty"></p>;
+
     </form>
 
     <script>
+
         let form = document.forms.registration
 
         let inputName = document.getElementById('name');
         let inputEmail = document.getElementById('email');
         let inputAge = document.getElementById('age');
-        let inputP = document.forms.elements.p;
+        // let inputP = document.forms.elements('p');
+        let inputP = document.getElementsByName('p');
         let select = document.getElementById('select');
-        let inputPassword = document.getElementById('psaaword');
+        let inputPassword = document.getElementById('password');
         let inputCheckbox = document.getElementById('checkbox');
+
+        // let inputsAll = document.querySelector('input');   
+
 
         let button = document.getElementById('submit');
 
-        let nameRegex =
-        let emailRegex = 
-        let passwordRegex = ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$;
+        let nameRegex = '^[A-Za-zА-Яа-яЁё\s]+$';
+        let emailRegex = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+        let passwordRegex ='э^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$';
 
         let errorName = document.getElementById('errorName');
         let errorEmail = document.getElementById('errorEmail');
         let errorAge = document.getElementById('errorAge');
-        let errorP = documnet.getElementById('errorP');
+        let errorP = document.getElementById('errorP');
         let errorProfession = document.getElementById('errorProfession');
         let errorCheckbox = document.getElementById('errorCheckbox');
         let errorPassword = document.getElementById('errorPassword');
 
         let elementsForFocus = document.querySelectorAll('.form_elements');
+        console.log(elementsForFocus);
 
-        form.addEventListener('submit', function(evt) {
-            evt.preventDefault();
+        elementsForFocus.forEach(function(element){
+            element.addEventListener('focus', function(event){
+                event.target.classList.add('focused');
+            });
+            element.addEventListener('blur', function(event){
+                event.target.classList.remove('focused');
+            })
+        });
 
-            if (inputName.value === '' || nameRegex.test(inputName.value)) {
-                errorName.textContent = 'Enter your name';
-                errorName.style.display = 'block';
-            } else if (inputEmail.value === '' || emailRegex.test(inputEmail.value)) {
-                errorEmail.textContent = 'Enter your email';
-                errorEmail.style.display = 'block';
-            }  else if (inputAge.value === '') {
-                errorAge.textContent = 'Enter your age';
-                errorAge.style.display = 'block';
-            } else if (inputP.checked === false){
-                errorP.textContent = 'Choose any variant';
-                errorP.style.display = 'block';
-            } else if (select.value === ''){
-                errorProfession.textContent = 'Enter your password';
-                errorProfession.style.display = 'block';
-            } else if (inputPassword.value === '' || passwordRegex.test(inputPassword.value)) {
-                errorPassword.textContent = 'Enter the password';
-                errorPassword.style.display = 'block';
-            } else if (inputCheckbox.checked === false) {
-                errorCheckbox.textContent = 'Agree with the terms';
-                errorCheckbox.style.display = 'block';
-            } else {
-                errorName.style.display = '';
-                console.log(inputName.value);
-                errorEmail.textContent = '';
-                console.log(inputEmail.value);
-                errorAge.textContent = '';
-                console.log(inputAge);
-                errorP.textContent = '';
-                console.log(inputP.vale);
-                errorProfession.textContent = '';
-                console.log(select.value);                
-                errorPassword.textContent = '';
-                console.log(inputPassword.value);
-                errorCheckbox.textContent = '';
-                button.disabled = false;
-                form.reset();
+        
+
+        elementsForFocus.addEventListener('input', () => {
+            function checkEmpty(element){
+                if (!elementsForFocus.value === '') {
+                    errorEmpty.style.display = 'none';
+                    console.log(elementsForFocus.value);
+                } else {
+                    errorEmpty.style.display = 'The field is required';
+                }
             }
         });
 
-        elementsForFocus.addEventListener('focus', function(){
-            elementsForFocus.style.border = '1px solid #00ff00';
-        }) ;
 
-        elementsForFocus.addEventListener('blur', function(){
-            elementsForFocus.style.border =   '';
-        }) ;
+        form.addEventListener('submit', function(evt) {
+        evt.preventDefault();
+
+        if (nameRegex.test(inputName.value)) {
+                errorName.textContent = '';
+                errorName.style.display = 'none';
+                console.log(inputName.value);
+            } else {
+                errorName.textContent = 'Поле должно содержать только буквы и пробелы. Длина имени должна быть от 2 до 20 символов';
+                errorName.style.display = 'block';
+            }
+            
+        if (emailRegex.test(inputEmail.value)) {
+                errorEmail.textContent = '';
+                errorEmail.style.display = 'none';
+                console.log(inputEmail.value);
+            }  else {
+                errorEmail.textContent = 'Поле должно содержать символ @ и доменное имя';
+                errorEmail.style.display = 'block';
+            }
+            
+        // if (inputAge.value === '') {
+        //         errorAge.textContent = 'Enter your age';
+        //         errorAge.style.display = 'block';
+        //     } else {
+        //         errorAge.textContent = '';
+        // console.log(inputAge);
+        //     }
+
+        if (inputP.checked === false){
+                errorP.textContent = 'Choose any variant';
+                errorP.style.display = 'block';
+            } else {
+                errorP.textContent = '';
+                console.log(inputP.value);
+            }
+            
+        if (select.value === ''){
+                errorProfession.textContent = 'Enter your password';
+                errorProfession.style.display = 'block';
+            } else {
+                errorProfession.textContent = '';
+            console.log(select.value);
+                
+            }
+            
+        if (passwordRegex.test(inputPassword.value)) {
+                errorPassword.textContent = '';
+                errorPassword.style.display = 'none';
+            } else {
+                errorPassword.textContent = 'Поле должно быть не менее 8 символов длиной и содержать как минимум одну заглавную букву, одну строчную букву и одну цифру ';
+                console.log(inputPassword.value);
+                
+            }
+
+        if (inputCheckbox.checked === false) {
+                errorCheckbox.textContent = 'Agree with the terms';
+                errorCheckbox.style.display = 'block';
+            } else {
+                errorCheckbox.textContent = '';
+            }
+        })
         
+
+
+
+        //     if (!inputName.value  ===' ' && nameRegex.test(inputName.value)) {
+        //         // checkEmpty(this);
+        //         // errorName.textContent = '';
+        //         errorName.style.display = 'none';
+        //     } else {
+
+        //     }
+
+
+
+        //     } else if (inputEmail.value === '' || emailRegex.test(inputEmail.value)) {
+        //         errorEmail.textContent = 'Enter your email';
+        //         errorEmail.style.display = 'block';
+        //     }  else if (inputAge.value === '') {
+        //         errorAge.textContent = 'Enter your age';
+        //         errorAge.style.display = 'block';
+        //     } else if (inputP.checked === false){
+        //         errorP.textContent = 'Choose any variant';
+        //         errorP.style.display = 'block';
+        //     } else if (select.value === ''){
+        //         errorProfession.textContent = 'Enter your password';
+        //         errorProfession.style.display = 'block';
+        //     } else if (inputPassword.value === '' || passwordRegex.test(inputPassword.value)) {
+        //         errorPassword.textContent = 'Enter the password';
+        //         errorPassword.style.display = 'block';
+        //     } else if (inputCheckbox.checked === false) {
+        //         errorCheckbox.textContent = 'Agree with the terms';
+        //         errorCheckbox.style.display = 'block';
+        //     } else {
+        //         errorName.style.display = '';
+        //         console.log(inputName.value);
+        //         errorEmail.textContent = '';
+        //         console.log(inputEmail.value);
+        //         errorAge.textContent = '';
+        //         console.log(inputAge);
+        //         errorP.textContent = '';
+        //         console.log(inputP.vale);
+        //         errorProfession.textContent = '';
+        //         console.log(select.value);                
+        //         errorPassword.textContent = '';
+        //         console.log(inputPassword.value);
+        //         errorCheckbox.textContent = '';
+        //         button.disabled = false;
+        //         form.reset();
+        //     }
+        // });
+        
+            // elementsForFocus.addEventListener('focus', function(event){
+            //     event.target.classList.add('focused');
+            // });
+            // elementsForFocus.addEventListener('blur', function(event){
+            //     event.target.classList.remove('focused');
+            // });
+        
+
+        // elementsForFocus.addEventListener('focus', function(){
+        //     elementsForFocus.style.border = '1px solid #00ff00';
+        // }) ;
+
+        // elementsForFocus.addEventListener('blur', function(){
+        //     elementsForFocus.style.border =   '';
+        // }) ;
 
         // if (inputName.value === '' || nameRegex.test(inputName.value) {
         //         errorName.textContent = 'Enter your name';
